@@ -78,6 +78,13 @@ A web-based tool for converting WPPOOL support ticket references into clickable 
 ### File Structure
 ```
 ticket-link-generator/
+├── assets/
+├─── css/
+├──── styles.css  # Main stylesheet for the application
+├─── js/
+├──── script.js # Main script for the application
+├─── img/
+├──── logo.svg    # Application logo
 ├── index.html    # Main application file
 ├── README.md     # This documentation
 ```
