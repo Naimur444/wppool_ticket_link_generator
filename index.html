@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ticket Link Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 0 20px;
+            background-color: #f5f5f5;
+        }
+
+        .logo {
+            max-width: 200px;
+            margin-bottom: 20px;
+        }
+
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        textarea {
+            width: 100%;
+            min-height: 150px;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-family: monospace;
+            resize: vertical;
+        }
+
+        .primary-button {
+            background-color: #0073aa;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        .primary-button:hover {
+            background-color: #005c88;
+        }
+
+        .result-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .copy-button {
+            background: transparent;
+            border: 1px solid #0073aa;
+            color: #0073aa;
+            padding: 5px 10px;
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .copy-button:hover {
+            background: #0073aa;
+            color: white;
+        }
+
+        .copy-button svg {
+            width: 16px;
+            height: 16px;
+        }
+
+        .copy-success {
+            background: #4CAF50 !important;
+            border-color: #4CAF50 !important;
+            color: white !important;
+        }
+
+        .format-options {
+            margin-bottom: 15px;
+        }
+
+        .radio-group {
+            margin-top: 8px;
+        }
+
+        .radio-group input[type="radio"] {
+            margin-right: 5px;
+        }
+
+        .radio-group label {
+            margin-right: 20px;
+        }
+
+        #result {
+            margin-top: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: #f9f9f9;
+            font-family: monospace;
+            line-height: 1.5;
+        }
+
+        #result div,
+        #result li {
+            margin: 0.5em 0;
+        }
+
+        #result.bullets {
+            list-style-type: disc;
+        }
+
+        #result.numbers {
+            list-style-type: decimal;
+        }
+
+        .instructions {
+            margin-bottom: 20px;
+            color: #666;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <img src="https://wppool.dev/wp-content/themes/wppool/assets/img/wppool-image/logo.svg" alt="WPPOOL Logo" class="logo">
+        <h1>Ticket Link Generator</h1>
+        
+        <div class="instructions">
+            <p>Paste your ticket list in the format:</p>
+            <pre>[#1153] - Problem with plugin installation. (EchoRewards)</pre>
+        </div>
+
+        <div class="format-options">
+            <label>List Format:</label>
+            <div class="radio-group">
+                <input type="radio" id="noFormat" name="format" value="none" checked>
+                <label for="noFormat">No Format</label>
+                
+                <input type="radio" id="bulletPoints" name="format" value="bullets">
+                <label for="bulletPoints">Bullet Points</label>
+                
+                <input type="radio" id="numbers" name="format" value="numbers">
+                <label for="numbers">Numbers</label>
+            </div>
+        </div>
+
+        <textarea id="inputText" placeholder="Paste your ticket list here..."></textarea>
+        <button class="primary-button" onclick="processTickets()">Generate Links</button>
+        <div class="result-header">
+            <h3>Result:</h3>
+            <button class="copy-button" onclick="copyResult()" id="copyButton">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                </svg>
+                Copy
+            </button>
+        </div>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        function copyResult() {
+            const result = document.getElementById('result');
+            const copyButton = document.getElementById('copyButton');
+
+            // Create a blob with html content
+            const blob = new Blob([result.innerHTML], { type: 'text/html' });
+            const richTextData = new ClipboardItem({
+                'text/html': blob,
+                'text/plain': new Blob([result.innerText], { type: 'text/plain' })
+            });
+
+            // Use the new Clipboard API to copy formatted content
+            navigator.clipboard.write([richTextData]).then(() => {
+                // Show success state
+                copyButton.innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                    </svg>
+                    Copied!
+                `;
+                copyButton.classList.add('copy-success');
+                
+                // Reset button after 2 seconds
+                setTimeout(() => {
+                    copyButton.innerHTML = `
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                        </svg>
+                        Copy
+                    `;
+                    copyButton.classList.remove('copy-success');
+                }, 2000);
+            }).catch(err => {
+                // Fallback for browsers that don't support clipboard.write
+                const selection = window.getSelection();
+                const range = document.createRange();
+                range.selectNodeContents(result);
+                selection.removeAllRanges();
+                selection.addRange(range);
+                document.execCommand('copy');
+                selection.removeAllRanges();
+                
+                // Show success state
+                copyButton.innerHTML = `
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                    </svg>
+                    Copied!
+                `;
+                copyButton.classList.add('copy-success');
+                
+                // Reset button after 2 seconds
+                setTimeout(() => {
+                    copyButton.innerHTML = `
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                        </svg>
+                        Copy
+                    `;
+                    copyButton.classList.remove('copy-success');
+                }, 2000);
+            });
+        }
+
+        function processTickets() {
+            const input = document.getElementById('inputText').value;
+            const result = document.getElementById('result');
+            
+            if (!input.trim()) {
+                result.textContent = 'Please enter some ticket data.';
+                return;
+            }
+
+            // Get selected format
+            const format = document.querySelector('input[name="format"]:checked').value;
+
+            // Process each line
+            let processedLines = input.split('\n')
+                .filter(line => line.trim()) // Remove empty lines
+                .map(line => {
+                    // Match [#number] pattern
+                    return line.replace(
+                        /\[#(\d+)\]/g,
+                        (match, ticketNumber) => {
+                            const url = `https://support.wppool.dev/wp-admin/admin.php?page=fluent-support#/tickets/${ticketNumber}/view`;
+                            return `<span style="font-weight: bold">[<a href="${url}" target="_blank">#${ticketNumber}</a>]</span>`;
+                        }
+                    );
+                });
+
+            // Apply formatting based on selection
+            let formattedOutput;
+            if (format === 'bullets') {
+                formattedOutput = '<ul style="margin: 0; padding-left: 20px;">' + 
+                    processedLines.map(line => `<li style="margin: 0.5em 0;">${line}</li>`).join('') + 
+                    '</ul>';
+                result.className = 'bullets';
+            } else if (format === 'numbers') {
+                formattedOutput = '<ol style="margin: 0; padding-left: 20px;">' + 
+                    processedLines.map(line => `<li style="margin: 0.5em 0;">${line}</li>`).join('') + 
+                    '</ol>';
+                result.className = 'numbers';
+            } else {
+                formattedOutput = processedLines.map(line => `<div style="margin: 0.5em 0;">${line}</div>`).join('');
+                result.className = '';
+            }
+
+            // Display the result with clickable links
+            result.innerHTML = formattedOutput;
+        }
+    </script>
+</body>
+</html>
