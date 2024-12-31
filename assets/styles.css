@@ -1,0 +1,209 @@
+:root {
+    --primary-color: #0073aa;
+    --secondary-color: #005c88;
+    --background-color: #f8fafc;
+    --card-background: #ffffff;
+    --text-color: #1e293b;
+    --border-color: #e2e8f0;
+    --success-color: #10b981;
+    --radius: 12px;
+    --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+    background-color: #2d3945;
+    color: var(--text-color);
+    line-height: 1.5;
+    min-height: 100vh;
+    padding: 2rem;
+}
+
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.logo {
+    max-width: 200px;
+    margin-bottom: 1rem;
+}
+
+.card {
+    background: var(--card-background);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 2rem;
+    margin-bottom: 2rem;
+}
+
+.input-section, .output-section {
+    margin-bottom: 2rem;
+}
+
+h2 {
+    color: var(--text-color);
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+textarea {
+    width: 100%;
+    min-height: 150px;
+    padding: 1rem;
+    border: 1px solid var(--border-color);
+    border-radius: calc(var(--radius) - 4px);
+    font-family: ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo, Consolas, 'DejaVu Sans Mono', monospace;
+    font-size: 0.875rem;
+    line-height: 1.7;
+    resize: vertical;
+    transition: border-color 0.3s ease;
+    background-color: var(--background-color);
+}
+
+textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(0, 115, 170, 0.1);
+}
+
+.format-options {
+    display: flex;
+    gap: 1rem;
+    margin: 1.5rem 0;
+    flex-wrap: wrap;
+}
+
+.format-option {
+    flex: 1;
+    min-width: 120px;
+}
+
+.format-option input[type="radio"] {
+    display: none;
+}
+
+.format-option label {
+    display: block;
+    padding: 0.75rem 1rem;
+    text-align: center;
+    background: var(--background-color);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.format-option input[type="radio"]:checked + label {
+    background: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+}
+
+.primary-button {
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: var(--radius);
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 500;
+    transition: background-color 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.primary-button:hover {
+    background: var(--secondary-color);
+}
+
+.result-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.copy-button {
+    background: transparent;
+    border: 1.5px solid var(--primary-color);
+    color: var(--primary-color);
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+
+.copy-button:hover {
+    background: var(--primary-color);
+    color: white;
+}
+
+.copy-button svg {
+    width: 16px;
+    height: 16px;
+}
+
+.copy-success {
+    background: var(--success-color) !important;
+    border-color: var(--success-color) !important;
+    color: white !important;
+}
+
+#result {
+    background: var(--background-color);
+    padding: 1.5rem;
+    border-radius: calc(var(--radius) - 4px);
+    font-family: ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo, Consolas, 'DejaVu Sans Mono', monospace;
+    font-size: 0.875rem;
+    line-height: 1.7;
+}
+
+#result div,
+#result li {
+    margin: 0.5em 0;
+}
+
+#result a {
+    color: var(--primary-color);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+#result a:hover {
+    color: var(--secondary-color);
+    text-decoration: underline;
+}
+
+@media (max-width: 640px) {
+    body {
+        padding: 1rem;
+    }
+
+    .card {
+        padding: 1.5rem;
+    }
+
+    .format-option {
+        flex: 1 1 100%;
+    }
+}
